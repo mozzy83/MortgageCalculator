@@ -1,5 +1,5 @@
 :root {
-    --primary-color: #1d5888;
+    --primary-color: #331a00;
     --secondary-color: #ff993b;
     --dark-color: #292929;
     --white-color: #e7e7e7;
@@ -7,6 +7,10 @@
 
 body {
     color: var(--dark-color);
+}
+
+.titleFont {
+    font-family: 'Belleza', sans-serif;
 }
 
 nav {
