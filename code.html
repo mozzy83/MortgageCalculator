@@ -60,17 +60,56 @@
                     <div class="col col-lg-8">
                         <pre class="line-numbers">
                             <code class="language-javascript">
-//Call Hello World
-function helloWorld() {
-    alert("Wello World");
+//Retrieve values from user
+function getValues() {
+    let mortgage = {};
+    mortgage.principal = parseFloat(document.getElementById('loanAmountInput').value);
+    mortgage.term = parseFloat(document.getElementById('termInput').value);
+    mortgage.interestRate = parseFloat(document.getElementById('interestInput').value);
+
+    if(Number.isInteger(mortgage.principal) && Number.isInteger(mortgage.term) && Number.isInteger(mortgage.interestRate)){
+        //Calculate total monthly payment amount
+        mortgage.monthlyPayment = mortgage.principal * (mortgage.interestRate/1200)/(1 - (1 + mortgage.interestRate/1200)**-mortgage.term);
+        let displayHTML = buildDisplayHTML(mortgage);
+        //Display results to user
+        displayResults(displayHTML, mortgage)
+        }
+        else {alert("Please enter valid numbers for each field")}
+        }
+
+function buildDisplayHTML(mortgage) {
+    let displayHTML = '';
+    let balance = mortgage.principal;
+    mortgage.totalInterest = 0;
+    for (let i = 1; i <= mortgage.term; i++) {
+        let month = i;
+        let interest = balance * mortgage.interestRate / 1200;
+        let principalPayment = mortgage.monthlyPayment - parseFloat(interest);
+        balance = balance - principalPayment;
+        mortgage.totalInterest = (Number(mortgage.totalInterest) + Number(interest)).toFixed(2);
+        displayHTML += `<tr><td>${month}</td><td>${mortgage.monthlyPayment.toFixed(2)}</td><td>${principalPayment.toFixed(2)}</td><td>${interest.toFixed(2)}</td><td>${mortgage.totalInterest}</td><td>${balance.toFixed(2)}</td></tr>`;
+    }
+    return displayHTML;
+}
+
+function displayResults(displayHTML, mortgage) {
+    document.getElementById("tableBody").innerHTML = displayHTML;
+    document.getElementById("monthlyPaymentAmount").innerHTML = `$${mortgage.monthlyPayment.toFixed(2)}`;
+    document.getElementById("totalPrincipal").innerHTML = `$${mortgage.principal.toFixed(2)}`;
+    document.getElementById("totalInterest").innerHTML = `$${mortgage.totalInterest}`;
+    document.getElementById("totalCost").innerHTML = `$${(Number(mortgage.principal) + Number(mortgage.totalInterest)).toFixed(2)}`;
 }
                             </code>
                         </pre>
                     </div>
                     <div class="col col-lg-4">
-                        <p>The Code is structured in one function.</p>
-                        <h5>Hello World</h5>
-                        <p>Hello World is a function that displays an alert with a message of "Hello World"</p>
+                        <p>The Code is structured in three main functions.</p>
+                        <h5>getValues()</h5>
+                        <p>The first function creates an object so all the necessary values can be applied to it and passed around easily. The first three object properties are populated with the values entered by the user. The values are then validated, the monthly payment is calculated, and the object is passed to the next function...</p>
+                        <h5>buildDisplayHTML()</h5>
+                        <p>This function initializes an empty string that we will use to create our table HTML. It then declares a variable for our balance and a property for our total interest. Then a For Loop sets values for our month, interest, principal payment, and total interest. Each loop populates the HTML for one row of our results table. Finally the function returns the completed HTML for our last function to use...</p>
+                        <h5>displayResults()</h5>
+                        <p>The final function simply populates our table with the values we calculated as well as our monthly payment, total principal, total interest, and total cost fields.</p>
                     </div>
                 </div>
             </div>
