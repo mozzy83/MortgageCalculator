@@ -5,7 +5,7 @@ function getValues() {
     mortgage.term = parseFloat(document.getElementById('termInput').value);
     mortgage.interestRate = parseFloat(document.getElementById('interestInput').value);
 
-    if(Number.isInteger(mortgage.principal) && Number.isInteger(mortgage.term) && Number.isInteger(mortgage.interestRate)){
+    if((Number.isNaN(mortgage.principal) && Number.isNaN(mortgage.term) && Number.isNaN(mortgage.interestRate))==false){
         //Calculate total monthly payment amount
         mortgage.monthlyPayment = mortgage.principal * (mortgage.interestRate/1200)/(1 - (1 + mortgage.interestRate/1200)**-mortgage.term);
         let displayHTML = buildDisplayHTML(mortgage);
