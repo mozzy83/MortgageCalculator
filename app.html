@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By Matt Osberg</title>
+    <title>Mortgage Calculator: A Coding Project By Matt Osberg</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -24,7 +24,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="/img/TransparentFavicon2.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                APP NAME
+                Mortgage Calculator
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,7 @@
                     </li>
                     <!--Edit href to point to Git Repo for project-->
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="#">Git Repo</a>
+                        <a class="nav-link" target="_blank" href="https://github.com/mozzy83/MortgageCalculator.git">Git Repo</a>
                     </li>
                     <!--Edit about href to point to portfolio site-->
                     <li class="nav-item">
@@ -56,7 +56,83 @@
     <!-- ****** Main Section ******-->
     <main class="flex-shrink-0">
         <div class="container mt-5">
+            <div class="row">
+                <div class="col-12 col-lg-4 border">
+                    <h2 class="mt-2">Loan Calculator</h2>
+                    <!--Input form here-->
+                    <form class="form mt-5">
+                        <div class="form-group row mb-2">
+                            <label for="inputAmount" class="col-6 col-form-label">Loan Amount:</label>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                    <span class="input-group-text">$</span>
+                                    </div>
+                                    <input type="number" id="inputAmount" class="form-control" aria-label="Loan Amount (to the nearest dollar)" placeholder="Amount" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="inputTerm" class="col-6 col-form-label">Term (Months):</label>
+                            <div class="col-6">
+                                <input type="number" class="form-control" id="inputTerm" placeholder="60" step="1" min="1">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-2">
+                            <label for="inputRate" class="col-6 col-form-label">Interest Rate</label>
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="inputRate" placeholder="3" step=".01" min="1">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">%</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end mt-4 mb-2">
+                            <button type="button" id="btnSubmit" class="btn btn-outline-secondary">Calculate</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-12 col-lg-8 border">
+                    <div class=" row mt-4">
+                        <h4 class="d-flex justify-content-center">Your Monthly Payments:</h4>
+                        <h4 id="monthlyPayments" class="d-flex justify-content-center mt-3"></h4>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">Total Principal:</div>
+                        <div id="totalPrincipal" class="col-6 d-flex justify-content-end"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">Total Interest:</div>
+                        <div id="totalInterest" class="col-6 d-flex justify-content-end"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-6">Total Cost:</div>
+                        <div id="totalCost" class="col-6 d-flex justify-content-end fwbold"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <!--Results table-->
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead class=" customHead">
+                            <tr>
+                                <th scope="col">Month</th>
+                                <th scope="col">Payment</th>
+                                <th scope="col">Principal</th>
+                                <th scope="col">Interest</th>
+                                <th scope="col">Total Interest</th>
+                                <th scope="col">Balance</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultTable">
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
     <!-- ****** Footer Section ******-->
@@ -83,6 +159,8 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
     </script>
     <script src="/js/site.js"></script>
-
+    <script>
+        document.getElementById("btnSubmit").addEventListener("click", getValues);
+    </script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By Matt Osberg</title>
+    <title>Mortgage Calculator: A Coding Project By Matt Osberg</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -25,7 +25,7 @@
         <div class="container-fluid">
             <a class="navbar-brand" href="#">
                 <img src="/img/TransparentFavicon2.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">
-                APP NAME
+                Mortgage Calculator
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +44,7 @@
                     </li>
                     <!--Edit href to point to Git Repo for project-->
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="#">Git Repo</a>
+                        <a class="nav-link" target="_blank" href="https://github.com/mozzy83/MortgageCalculator.git">Git Repo</a>
                     </li>
                     <!--Edit about href to point to portfolio site-->
                     <li class="nav-item">
@@ -57,22 +57,70 @@
     <!-- ****** Main Section ******-->
     <main class="flex-shrink-0">
         <div class="container py-4 px-5 mt-5">
-            <h2 class="border-1 border-bottom border-dark py-2">The Code for APP NAME.</h2>
+            <h2 class="border-1 border-bottom border-dark py-2">The Code for Mortgage Calculator.</h2>
             <div class="row row-cols-1 row-cols-lg-2 pt-2">
                 <div class="col-lg-8">
                     <pre class="line-numbers">
                         <code class="language-javascript">
-                            //Call Hello World
-                            function HellowWorld(){
-                                    alert("Hello World");
+                            function getValues(){
+
+                                let loanObj = {};
+                                loanObj.Amount = parseFloat(document.getElementById("inputAmount").value);
+                                loanObj.Term = parseFloat(document.getElementById("inputTerm").value);
+                                loanObj.Rate = parseFloat(document.getElementById("inputRate").value);
+                            
+                                if(loanObj.Amount == ''|| loanObj.Term == ''|| loanObj.Rate == ''){alert("Please fill out all fields with valid values")}
+                                else{
+                                    let resultString = calculateLoan(loanObj);
+                                    displayResults(loanObj);
                                 }
+                            }
+                            
+                            function calculateLoan(loanObj){
+                                loanObj.tableString = '';
+                                loanObj.totalMonthlyPayment = (loanObj.Amount*(loanObj.Rate/1200))/(1-(1+loanObj.Rate/1200)**(-loanObj.Term));
+                                loanObj.totalInterest = 0;
+                                let balance = loanObj.Amount;
+                            
+                                for (let index = 1; index <= loanObj.Term; index++) {
+                                    let month = index;
+                                    let interestPayment = balance*loanObj.Rate/1200;
+                                    loanObj.totalInterest += interestPayment;
+                                    let principalPayment = loanObj.totalMonthlyPayment-interestPayment;
+                                    balance -= principalPayment;
+                                    loanObj.tableString += `<tr><td>${month}</td><td>\$${loanObj.totalMonthlyPayment.toFixed(2)}</td><td>\$${principalPayment.toFixed(2)}</td><td>\$${interestPayment.toFixed(2)}</td><td>\$${loanObj.totalInterest.toFixed(2)}</td><td>\$${balance.toFixed(2)}</td></tr>`;
+                                    }
+                            
+                                return loanObj;
+                                
+                            }
+                            
+                            function displayResults(loanObj){
+                                var formatter = new Intl.NumberFormat('en-US', {
+                                    style: 'currency',
+                                    currency: 'USD',      
+                                  });
+                            
+                                  document.getElementById("monthlyPayments").innerHTML = formatter.format(loanObj.totalMonthlyPayment);
+                                  document.getElementById("totalPrincipal").innerHTML = formatter.format(loanObj.Amount);
+                                  document.getElementById("totalInterest").innerHTML = formatter.format(loanObj.totalInterest);
+                                  document.getElementById("totalCost").innerHTML = formatter.format(loanObj.Amount+loanObj.totalInterest);
+                            
+                                  document.getElementById("resultTable").innerHTML = loanObj.tableString;
+                            }
+                            
+                            
                         </code>
                     </pre>
                 </div>
                 <div class="col-lg-4">
-                    <p>The code is structured in one function.</p>
-                    <h5>Hello World</h5>
-                    <p>Hello World is a function that displays an alert with a message of "Hello World"</p>
+                    <p>The code is structured in three main functions.</p>
+                    <h5>getValues()</h5>
+                    <p>The first function declares an object that the needed values can be stored in. Then it retrieves the values entered by the user while parsing them into a float and assigning them to a property of the object. It then validates that the user entered all the necessary values before passing the object to the second function...</p>
+                    <h5>calculateLoan()</h5>
+                    <p>The second function instantiates a few object properties that are needed. First is a string that will be used to populate our HTML and display the mortgage schedule. Second, it calculates the monthly payment for the mortgage. It then sets the interest paid to 0 and declares a variable for the balance.</p><p>The function then begins to calculate the mortgage schedule with a 'for loop' that iterates one time for every month of the mortgage term. First it sets the current month to the index. Then it calculates the current interest payment before calculating the current month's principal payment. Then it subtracts the principal payment from the balance before using the calculated values to populate a string for our display HTML. All of these calculations are stored in the object and returned so it can be used to call the last function...</p>
+                    <h5>displayResults()</h5>
+                    <p>The final function declares a formatter to make it easier to display our values as a currency. Then, it uses the object properties to set the inner HTML of the appropriate display fields. The monthly payments, total principal cost, total interest cost, and total cost to payoff the mortgage are set first. The last step is to populate the mortgage schedule table with the HTML markup that was built.</p>
                 </div>
             </div>
         </div>

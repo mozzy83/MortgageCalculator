@@ -1,5 +1,5 @@
 :root{
-    --primary-color: #1d5888;
+    --primary-color: #362617;
     --secondary-color: #ff993b;
     --dark-color: #292929;
     --white-color: #e7e7e7;
@@ -72,4 +72,12 @@ main>.container {
     left: 0;
     bottom: 0;
     width: 100%;
+}
+
+.customHead{
+    background-color:var(--primary-color);
+    color: var(--white-color)
+}
+.fwbold{
+    font-weight: bold;
 }
