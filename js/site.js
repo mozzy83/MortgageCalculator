@@ -1,11 +1,16 @@
 function getValues(){
 
     let loanObj = {};
-    loanObj.Amount = parseFloat(document.getElementById("inputAmount").value);
+    loanObj.Price = parseFloat(document.getElementById("inputPrice").value);
+    //loanObj.Amount = parseFloat(document.getElementById("inputAmount").value);
     loanObj.Term = parseFloat(document.getElementById("inputTerm").value);
     loanObj.Rate = parseFloat(document.getElementById("inputRate").value);
+    loanObj.DownPercent = parseFloat(document.getElementById("inputDownPercent").value);
+    loanObj.DownAmount =  parseFloat(document.getElementById("inputDownAmount").value);
+    loanObj.DownPayment = calculateDownPayment(loanObj.DownPercent, loanObj.DownAmount, loanObj.Price)
+    loanObj.Amount = loanObj.Price - loanObj.DownPayment;
 
-    if(loanObj.Amount == ''|| loanObj.Term == ''|| loanObj.Rate == ''){alert("Please fill out all fields with valid values")}
+    if(loanObj.Price == ''|| loanObj.Term == ''|| loanObj.Rate == ''){alert("Please fill out all fields with valid values")}
     else{
         let resultString = calculateLoan(loanObj);
         displayResults(loanObj);
@@ -31,6 +36,19 @@ function calculateLoan(loanObj){
     
 }
 
+function calculateDownPayment(downPercent, downAmount, Price){
+    let downPayment = 0;
+
+    if(downPercent == 0){
+        downPayment = downAmount;
+    }
+    else{
+        downPayment = (downPercent/100) * Price;
+    }
+    return downPayment;
+}
+
+
 function displayResults(loanObj){
     var formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',
@@ -38,6 +56,10 @@ function displayResults(loanObj){
       });
 
       document.getElementById("monthlyPayments").innerHTML = formatter.format(loanObj.totalMonthlyPayment);
+
+      document.getElementById("itemPrice").innerHTML = formatter.format(loanObj.Price);
+      document.getElementById("downPayment").innerHTML = formatter.format(loanObj.DownPayment);
+
       document.getElementById("totalPrincipal").innerHTML = formatter.format(loanObj.Amount);
       document.getElementById("totalInterest").innerHTML = formatter.format(loanObj.totalInterest);
       document.getElementById("totalCost").innerHTML = formatter.format(loanObj.Amount+loanObj.totalInterest);
