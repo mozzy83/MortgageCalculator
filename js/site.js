@@ -7,10 +7,17 @@ function getValues(){
     loanObj.Rate = parseFloat(document.getElementById("inputRate").value);
     loanObj.DownPercent = parseFloat(document.getElementById("inputDownPercent").value);
     loanObj.DownAmount =  parseFloat(document.getElementById("inputDownAmount").value);
+    if(isNaN(loanObj.DownPercent)){loanObj.DownPercent = 0;}
+    if(isNaN(loanObj.DownAmount)){loanObj.DownAmount = 0;}
     loanObj.DownPayment = calculateDownPayment(loanObj.DownPercent, loanObj.DownAmount, loanObj.Price)
     loanObj.Amount = loanObj.Price - loanObj.DownPayment;
 
-    if(loanObj.Price == ''|| loanObj.Term == ''|| loanObj.Rate == ''){alert("Please fill out all fields with valid values")}
+    //if(loanObj.Price == '' || isNaN(loanObj.Price) || loanObj.Term == '' || isNaN(loanObj.Term) || loanObj.Rate == '' || isNaN(loanObj.Rate)){alert("Please fill out all fields with valid values")}
+    if(loanObj.Price == '' || isNaN(loanObj.Price)){alert("Please enter valid loan price above $1.")}
+    else if(loanObj.Term == '' || isNaN(loanObj.Term)){alert("Please enter valid loan term of at least 1 month.")}
+    else if(loanObj.Rate == '' || isNaN(loanObj.Rate)){alert("Please enter valid interest rate of at least 1%.")}
+
+
     else{
         let resultString = calculateLoan(loanObj);
         displayResults(loanObj);
