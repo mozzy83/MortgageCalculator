@@ -25,6 +25,11 @@ function getValues(){
 }
 
 function calculateLoan(loanObj){
+    var formatter = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',      
+      });
+
     loanObj.tableString = '';
     loanObj.totalMonthlyPayment = (loanObj.Amount*(loanObj.Rate/1200))/(1-(1+loanObj.Rate/1200)**(-loanObj.Term));
     loanObj.totalInterest = 0;
@@ -36,7 +41,7 @@ function calculateLoan(loanObj){
         loanObj.totalInterest += interestPayment;
         let principalPayment = loanObj.totalMonthlyPayment-interestPayment;
         balance -= principalPayment;
-        loanObj.tableString += `<tr><td>${month}</td><td>\$${loanObj.totalMonthlyPayment.toFixed(2)}</td><td>\$${principalPayment.toFixed(2)}</td><td>\$${interestPayment.toFixed(2)}</td><td>\$${loanObj.totalInterest.toFixed(2)}</td><td>\$${balance.toFixed(2)}</td></tr>`;
+        loanObj.tableString += `<tr><td>${month}</td><td>${formatter.format(loanObj.totalMonthlyPayment)}</td><td>${formatter.format(principalPayment)}</td><td>${formatter.format(interestPayment)}</td><td>${formatter.format(loanObj.totalInterest)}</td><td>${formatter.format(balance)}</td></tr>`;
         }
 
     return loanObj;
